@@ -38,6 +38,50 @@
     </div>
   </div>
 
+  <script>
+    $(function(){
+      //登录功能
+      $('.input_sub').click(function(e){
+        //阻止默认行为
+        e.preventDefault(e)
+        //用户名
+        var username=$('.input_txt').val().trim();
+        //密码
+        var password=$('.input_pass').val().trim();
+
+        //非空判断
+        if(username===''||password===''){
+          alert('哥们儿 写点字');
+          return;
+        }
+        $.ajax({
+          url:'http://localhost:8080/api/v1/admin/user/login',
+          type:'post',
+          data:{
+            username:username,
+            password:password
+          },
+          success:function(backdata){
+
+            console.log(backdata);
+            
+            if(backdata.code===400){
+              alert(backdata.msg)
+            }else if (backdata.code===200) {
+              alert(backdata.msg);
+
+              //保存token 方便后续的使用
+              window.localStorage.setItem('token',backdata.token);
+              //跳转到首页
+              window.location.href='./index.html';
+            }
+          }
+        })
+      })
+    })
+  
+  
+  </script>
 </body>
 
 </html>
